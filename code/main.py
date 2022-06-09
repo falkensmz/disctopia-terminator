@@ -3,6 +3,7 @@ import os
 import sys
 import subprocess as sp
 from shutil import rmtree
+from time import sleep
 
 def check_registry():
     key = r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run\update'
@@ -42,7 +43,7 @@ processes = check_processes()
 persistence = check_peristence()
 
 if check_registry() or check_config() or check_processes() or check_peristence():
-    print("Disctopia-C2 was detected on the system.")
+    print("Disctopia-C2 has been detected on the system.")
     choice = input("Do you want to permanently delete Disctopia-c2 from the system? (Y/N): ")
     if choice == "Y" or "y" or "YES" or "yes":
 
@@ -79,3 +80,8 @@ if check_registry() or check_config() or check_processes() or check_peristence()
         print("Thank you for using disctopia-terminator")
         print("Exiting ...")
         sys.exit()
+else:
+    print("Disctopia-C2 has not been detected on the system.")
+    print("Thank you for using disctopia-terminator")
+    input("[ENTER] to exit")
+    sys.exit()
