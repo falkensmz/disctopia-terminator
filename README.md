@@ -9,9 +9,9 @@
 <h4 align="center">Detect and delete Disctopia once and for all</h4>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/Platform-Windows-blue">
-    <img src="https://img.shields.io/badge/Version-1.0.0-blue">
-    <img src="https://img.shields.io/badge/Python-3.5+-blue">
+    <img src="https://img.shields.io/badge/Platform-Windows-red">
+    <img src="https://img.shields.io/badge/Version-1.0.0-red">
+    <img src="https://img.shields.io/badge/Python-3.5+-red">
 </p>
 
 ---
