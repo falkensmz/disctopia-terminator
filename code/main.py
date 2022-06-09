@@ -1,11 +1,26 @@
-import discord_webhook
 import os
 import sys
 import subprocess as sp
 from shutil import rmtree
-from time import sleep
+
+header = """
+    ____  _           __              _                 
+   / __ \(_)_________/ /_____  ____  (_)___ _           
+  / / / / / ___/ ___/ __/ __ \/ __ \/ / __ `/           
+ / /_/ / (__  ) /__/ /_/ /_/ / /_/ / / /_/ /            
+/_____/_/____/\___/\__/\____/ .___/_/\__,_/             
+  ______                   /_/            __            
+ /_  __/__  _________ ___  (_)___  ____ _/ /_____  _____
+  / / / _ \/ ___/ __ `__ \/ / __ \/ __ `/ __/ __ \/ ___/
+ / / /  __/ /  / / / / / / / / / / /_/ / /_/ /_/ / /    
+/_/  \___/_/  /_/ /_/ /_/_/_/ /_/\__,_/\__/\____/_/     
+                                                        
+                                                                                                                                                                                    
+Version: 1.0.0                                                                               
+"""
 
 def check_registry():
+    print("[+] Checking for registry key...")
     key = r'HKCU\Software\Microsoft\Windows\CurrentVersion\Run\update'
     result = sp.Popen(f"reg query HKCU\Software\Microsoft\Windows\CurrentVersion\Run /v update", stderr=sp.PIPE, stdin=sp.DEVNULL, stdout=sp.PIPE, shell=True, text=True, creationflags=0x08000000)
     out, err = result.communicate()
@@ -16,6 +31,7 @@ def check_registry():
         return True
 
 def check_config():
+    print("[+] Checking for config file...")
     USERNAME = os.environ.get("USERNAME")
     if os.path.exists(fr'C:\Users\{USERNAME}\.config'):
         return True
@@ -23,12 +39,14 @@ def check_config():
         return False
 
 def check_peristence():
+    print("[+] Checking for persistence...\n")
     if os.path.exists(os.environ["appdata"] + "\\Windows-Updater.exe"):
         return True
     else:
         return False
 
 def check_processes():
+    print(f"[+] Checking for processes...")
     result = sp.Popen(f"tasklist", stderr=sp.PIPE, stdin=sp.DEVNULL, stdout=sp.PIPE, shell=True, text=True, creationflags=0x08000000)
     out, err = result.communicate()
     result.wait()
@@ -37,15 +55,18 @@ def check_processes():
     else:
         return False
 
+print(header)
+
 registry = check_registry()
 config = check_config()
 processes = check_processes()
 persistence = check_peristence()
 
-if check_registry() or check_config() or check_processes() or check_peristence():
-    print("Disctopia-C2 has been detected on the system.")
-    choice = input("Do you want to permanently delete Disctopia-c2 from the system? (Y/N): ")
-    if choice == "Y" or "y" or "YES" or "yes":
+if registry or config or processes or persistence:
+    print("[!] Disctopia-C2 has been detected on the system.\n")
+    choice = input("[?] Do you want to permanently delete Disctopia-c2 from the system? (Y/N): ")
+    if choice == "Y":
+        print("\n[+] Deleting Disctopia-C2 from the system...")
 
         USERNAME = os.environ.get("USERNAME")
 
@@ -73,15 +94,21 @@ if check_registry() or check_config() or check_processes() or check_peristence()
             except Exception as e:
                 print(f"An error has occured : {e}")
 
-        print("Threat has been neutralized successfully.")
+        print("\n[!] Threat has been neutralized successfully.")
+        print("[+] Thank you for using disctopia-terminator\n")
+        input("[ENTER] to exit")
         sys.exit()
 
+    elif choice == "N":
+        print("[+] Thank you for using disctopia-terminator\n")
+        input("[ENTER] to exit")
+        sys.exit()
     else:
-        print("Thank you for using disctopia-terminator")
-        print("Exiting ...")
+        print("[!] Invalid input\n", 'red')
+        input("[ENTER] to exit")
         sys.exit()
 else:
-    print("Disctopia-C2 has not been detected on the system.")
-    print("Thank you for using disctopia-terminator")
+    print("[!] Disctopia-C2 has not been detected on the system.")
+    print("Thank you for using disctopia-terminator\n")
     input("[ENTER] to exit")
     sys.exit()
